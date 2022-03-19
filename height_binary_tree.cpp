@@ -21,39 +21,49 @@ class Node {
 
 
 int findHeight(Node* root) {
-    if (root == NULL) {
-        return 0;
-    }
-
-    queue<Node*> ans;
-    int height = 0;
-    Node* start = root;
-    ans.push(start);
-    // ans.push(NULL);
-
-    while(!ans.empty()){
-
-
-        while(ans.size() > 0) {
-
-            Node* front = ans.front();
-            ans.pop();
-            if(front->left){
-                ans.push(front->left);
-            }
-
-            if(front->right) {
-                ans.push(front->right);
+        int depth = 0;
+        
+        if (root == NULL) return depth;
+        
+        queue<Node*> q;
+        q.push(root);
+        
+        while (!q.empty()) {
+            int size = q.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                Node* temp = q.front();
+                q.pop();
+                if (temp -> left != NULL) q.push(temp -> left);
+                if (temp -> right != NULL) q.push(temp -> right);
             }
         }
-        cout<<height;
-        height ++;
+        
+        return depth;
+}
 
-
-       
+bool checkBalanceBT(Node* root) {
+    if(root == NULL) {
+        return true;
     }
 
-    return height;
+    int leftHeight = findHeight(root->left);
+    int rightHeight = findHeight(root->right);
+
+    if(abs(leftHeight - rightHeight) > 1) {
+        return false;
+    }
+
+    int leftSide = checkBalanceBT(root->left);
+    int rightSide = checkBalanceBT(root->right);
+
+    if(!leftSide || !rightSide) {
+        return false;
+    }
+
+    return true;
+
+
 }
 
 
@@ -62,19 +72,19 @@ int main() {
 
                // 1 
         // 2       // 3
-                //4   // 6
-              //5
+    //4            //5    // 6
+              
     
 
-   t->left = new Node(2);
+    t->left = new Node(2);
     t->left->left = new Node(4);
     t->right = new Node(3);
     t->right->left = new Node(5);
-    t->right->right = new Node(6);
-    t->right->left->left = new Node(7);
-    t->right->right->right = new Node(8);
-    t->right->right->right->right = new Node(9);
-    t->right->right->right->right->left = new Node(10);
-
-    cout<< findHeight(t);
+    t->right->right = new Node(7);
+    t->right->right->right = new Node(7);
+    t->right->right->left = new Node(7)
+    t->right->right->right->right = new Node(7);
+    t->right->right->right->right->right = new Node(7);
+    // cout<< findHeight(t);
+    cout<< checkBalanceBT(t);
 }
